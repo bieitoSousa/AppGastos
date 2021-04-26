@@ -1,0 +1,75 @@
+endpoints:
+   api:
+      enabled: true
+logging:
+   level:
+      root: info
+      # root: debug
+ontimize:
+   corsfilter:
+      enabled: true
+   globalcors:
+      corsConfigurations:
+         '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            exposedHeaders: ["X-Auth-Token","Content-disposition","X-Requested-With"]
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - OPTIONS
+            - DELETE
+   jdbc:
+      nameConvention: upper
+      sqlhandler: postgres
+      sqlConditionProcessor:
+         uppperString: true
+         upperLike: false
+   security:
+      mode: default
+      ignorePaths: /users/forgotPassword,/bundle/bundle
+      roleInformationService:
+         roleRepository: RoleDao
+         roleNameColumn: ROL_NAME
+         serverPermissionQueryId: serverPermissions
+         serverPermissionNameColumn: SRP_NAME
+         clientPermissionQueryId: clientPermissions
+         clientPermissionColumn: ROL_XML_CLIENT_PERMISSION
+      userInformationService:
+         userRepository: UserDao
+         userLoginColumn: USR_LOGIN
+         userPasswordColumn: USR_PASSWORD
+         queryId: login
+         otherData:
+            - USR_ID
+            - TEN_ID
+      userRoleInformationService:
+         userRoleRepository: UserRoleDao
+         queryId: userRole
+         roleLoginColumn: USR_LOGIN
+         roleNameColumn: ROL_NAME
+server:
+   port: 8000
+   tomcat:
+      uri-encoding: UTF-8
+   compression:
+      enabled: true
+      mime-types: application/json, application/xml
+spring:
+   datasource:
+      driver-class-name: org.postgresql.Driver
+      #  dev database
+      jdbcUrl: jdbc:postgresql://localhost:5432/appGastos_dev
+      username: appGastos_dev_admin
+      password: 2HFExqbzIi*n
+      
+      initialSize: 3
+      testOnBorrow: true
+   main:
+      banner-mode: 'off'
+   session:
+      store-type: none
+   autoconfigure:
+      exclude: |
+            org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration, org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration, org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration
